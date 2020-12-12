@@ -11,5 +11,7 @@ int main(int argc, char** argv) {
       "ERROR",
       MB_OK | MB_ICONQUESTION);
   }
-  std::cout << std::hex << "Final address from data " << (DWORD)cat_quest::money_value.get_final_address(cat_quest_handle) << std::endl;
+  LPCVOID player_data_address = cat_quest::player_data.get_final_address(cat_quest_handle);
+  cat_quest::money_value.set_base_address((DWORD)player_data_address);
+  std::cout << std::hex << cat_quest::money_value.get_final_address(cat_quest_handle);
 }

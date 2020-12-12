@@ -8,7 +8,7 @@ multilevel_pointer::builder::~builder() {
 }
 
 multilevel_pointer::builder multilevel_pointer::builder::from_multilevel_pointer(multilevel_pointer& o_pointer) {
-  this->pointer = o_pointer;
+  this->pointer.set_previous_pointer(o_pointer);
   return *this;
 }
 
@@ -40,10 +40,18 @@ multilevel_pointer::~multilevel_pointer() {
 }
 
 LPCVOID multilevel_pointer::get_final_address(HANDLE process_handle) {
-  LPVOID ret = (LPVOID)this->get_base_address();
+  LPVOID ret;
+  if (this->get_previous_pointer() != nullptr) {
+    ret = (LPVOID)this->get_previous_pointer()->get_final_address(process_handle);
+  }
+  else {
+    ret = (LPVOID)this->get_base_address();
+  }
+  std::cerr << std::hex << (std::uint32_t)ret << std::endl;
   for (int i = 0; i < int(this->offsets.size()); ++i) {
     std::uint32_t offset = this->offsets[i];
     DWORD address_with_offset = (DWORD)ret + offset;
+    std::cerr << std::hex << (std::uint32_t)ret << " " << offset << " " << address_with_offset << std::endl;
     // avoid derefence to the last offset
     // we want the final address, not the value inside it
     if (i < int(this->offsets.size() - 1)) {
@@ -84,6 +92,10 @@ std::vector<std::uint32_t> multilevel_pointer::get_offsets() const {
   return offsets;
 }
 
+multilevel_pointer* multilevel_pointer::get_previous_pointer() {
+  return this->previous_pointer;
+}
+
 void multilevel_pointer::set_base_address(DWORD base_address) {
   this->base_address = base_address;
 }
@@ -94,4 +106,8 @@ void multilevel_pointer::add_offset(std::uint32_t offset) {
 
 void multilevel_pointer::set_offsets(std::vector<std::uint32_t> offsets) {
   this->offsets = offsets;
+}
+
+void multilevel_pointer::set_previous_pointer(multilevel_pointer& other) {
+  this->previous_pointer = &other;
 }
