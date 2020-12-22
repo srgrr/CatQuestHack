@@ -11,7 +11,11 @@ int main(int argc, char** argv) {
       "ERROR",
       MB_OK | MB_ICONQUESTION);
   }
-  LPCVOID player_data_address = cat_quest::player_data.get_final_address(cat_quest_handle);
-  cat_quest::money_value.set_base_address((DWORD)player_data_address);
-  std::cout << std::hex << cat_quest::money_value.get_final_address(cat_quest_handle);
+  auto mono_dll_base_address = proc_util::get_module_base_address(cat_quest_handle, "mono.dll");
+  cat_quest::money_value.set_base_address((DWORD)mono_dll_base_address);
+  LPCVOID money_addr = cat_quest::money_value.get_final_address(cat_quest_handle);
+  while (true) {
+    int content = 1000000000;
+    proc_util::write_to_proc_mem(cat_quest_handle, (void*)money_addr, &content, sizeof(int));
+  }
 }

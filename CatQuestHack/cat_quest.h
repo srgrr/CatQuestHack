@@ -7,24 +7,19 @@ namespace cat_quest {
 
 	std::string proc_name = "Cat Quest.exe";
 
-	multilevel_pointer player_data =
-		multilevel_pointer::builder()
-		.with_base_address(0x176A0000)
-		.add_offset(0x0)
-		.add_offset(0x8)
-		.add_offset(0x54)
-		.add_offset(0x61C)
-		.add_offset(0x0)
-		.add_offset(0x520)
-		.build();
-
+	// the base address is the one from mono.dll
+	// must be extracted as module base address from
+	// the mono.dll submodule in Cat Quest.exe
 	multilevel_pointer money_value =
 		multilevel_pointer::builder()
-		.from_multilevel_pointer(player_data)
-		.add_offset(0x14)
+		.add_offset(0x001F50AC)
+		.add_offset(0x5FC)
+		.add_offset(0x90)
+		.add_offset(0x10)
+		.add_offset(0x70)
 		.add_offset(0x0C)
-		.add_offset(0x08)
-		.add_offset(0x18)
+		.add_offset(0xD4)
+		.add_offset(0x158)
 		.build();
 
 };
