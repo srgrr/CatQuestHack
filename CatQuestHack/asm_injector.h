@@ -2,8 +2,14 @@
 #include "proc_util.h"
 class asm_injector {
 private:
+  // Handle to the victim process
   HANDLE proc_handle;
+  // Address where the injection will occur
   LPCVOID injection_address;
+  // The injector just replaces the instruction in the given address with a long jmp
+  // and fills the gaps (if any) withs nops, the actual instruction is moved to the
+  // injected page, the surplus value means the actual number of bytes we must move
+  // from the original code to the injected page
   int prefix_size;
   byte* code_to_inject;
   int bytes_to_inject;

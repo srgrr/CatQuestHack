@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="asm_injector.cpp" />
+    <ClCompile Include="coin_multiplier.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="multilevel_pointer.cpp" />
     <ClCompile Include="proc_util.cpp" />
@@ -108,6 +109,7 @@
   <ItemGroup>
     <ClInclude Include="asm_injector.h" />
     <ClInclude Include="cat_quest.h" />
+    <ClInclude Include="coin_multiplier.h" />
     <ClInclude Include="multilevel_pointer.h" />
     <ClInclude Include="proc_util.h" />
   </ItemGroup>

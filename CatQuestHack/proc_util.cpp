@@ -43,8 +43,14 @@ HANDLE proc_util::get_proc_handle(std::string process_name) {
   return nullptr;
 }
 
-bool proc_util::write_to_proc_mem(HANDLE proc_handle, void* mem_pos, void* content, std::uint32_t bytes) {
-  return WriteProcessMemory(proc_handle, (LPVOID)mem_pos, (LPCVOID)content, bytes, NULL);
+byte* proc_util::read_from_proc(HANDLE proc_handle, LPCVOID base_address, int byte_amount) {
+  byte *buffer = new byte[byte_amount];
+  ReadProcessMemory(proc_handle, base_address, (LPVOID)buffer, byte_amount, NULL);
+  return buffer;
+} 
+
+bool proc_util::write_to_proc_mem(HANDLE proc_handle, LPCVOID mem_pos, LPCVOID content, std::uint32_t bytes) {
+  return WriteProcessMemory(proc_handle, (LPVOID)mem_pos, content, bytes, NULL);
 }
 
 std::map< std::string, LPCVOID > proc_util::get_module_base_addresses(HANDLE proc_handle) {
@@ -77,4 +83,8 @@ LPCVOID proc_util::get_module_base_address(std::map<std::string, LPCVOID>& proce
 LPCVOID proc_util::get_module_base_address(HANDLE proc_handle, std::string mod_name) {
   std::map< std::string, LPCVOID > module_base_addresses = proc_util::get_module_base_addresses(proc_handle);
   return proc_util::get_module_base_address(module_base_addresses, mod_name);
+}
+
+LPCVOID proc_util::alloc(HANDLE proc_handle, int byte_amount) {
+  return VirtualAllocEx(proc_handle, NULL, byte_amount, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 }

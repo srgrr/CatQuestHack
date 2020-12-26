@@ -1,5 +1,6 @@
 #include "cat_quest.h"
 #include "proc_util.h"
+#include "coin_multiplier.h"
 #include <Windows.h>
 
 int main(int argc, char** argv) {
@@ -14,8 +15,8 @@ int main(int argc, char** argv) {
   auto mono_dll_base_address = proc_util::get_module_base_address(cat_quest_handle, "mono.dll");
   cat_quest::money_value.set_base_address((DWORD)mono_dll_base_address);
   LPCVOID money_addr = cat_quest::money_value.get_final_address(cat_quest_handle);
+  coin_multiplier(cat_quest_handle).run((LPCVOID)0x1d8e96f1);
   while (true) {
-    int content = 1000000000;
-    proc_util::write_to_proc_mem(cat_quest_handle, (void*)money_addr, &content, sizeof(int));
+
   }
 }

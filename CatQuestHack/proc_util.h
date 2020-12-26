@@ -15,13 +15,17 @@ public:
   // get a HANDLE with WR and VM query operation permissions, may fail if the targeted process
   // is somewhow protected
   static HANDLE get_proc_handle(std::string process_name);
+  // read from a process
+  static byte* read_from_proc(HANDLE proc_handle, LPCVOID base_address, int byte_amount);
   // write to process memory, must have a handle with proper permissions
-  static bool write_to_proc_mem(HANDLE proc_handle, void *mem_pos, void *content, std::uint32_t bytes);
+  static bool write_to_proc_mem(HANDLE proc_handle, LPCVOID mem_pos, LPCVOID content, std::uint32_t bytes);
   // get a map < module_name, module_base_address > for a given process
   static std::map< std::string, LPCVOID > get_module_base_addresses(HANDLE proc_handle);
   // get the module base address of a given module for a given process, uses the thing above this one
   static LPCVOID get_module_base_address(std::map< std::string, LPCVOID >& process_modules, std::string mod_name);
   // same, this one calls the one above 
   static LPCVOID get_module_base_address(HANDLE proc_handle, std::string mod_name);
+  // alloc memory in a foreign process, get the pointer to the new region
+  static LPCVOID alloc(HANDLE proc_handle, int byte_amount);
 };
 

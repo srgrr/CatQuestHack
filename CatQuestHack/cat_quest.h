@@ -1,5 +1,6 @@
 #pragma once
 #include "multilevel_pointer.h"
+#include "asm_injector.h"
 #include <iostream>
 #include <cstring>
 
