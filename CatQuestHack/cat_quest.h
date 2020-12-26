@@ -7,9 +7,7 @@ namespace cat_quest {
 
 	std::string proc_name = "Cat Quest.exe";
 
-	// the base address is the one from mono.dll
-	// must be extracted as module base address from
-	// the mono.dll submodule in Cat Quest.exe
+	// base = mono.dll (not fixed, retrieve it in runtime)
 	multilevel_pointer money_value =
 		multilevel_pointer::builder()
 		.add_offset(0x001F50AC)

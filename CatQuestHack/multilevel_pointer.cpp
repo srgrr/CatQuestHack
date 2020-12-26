@@ -1,4 +1,5 @@
 #include "multilevel_pointer.h"
+#include "asm_injector.h"
 
 multilevel_pointer::builder::builder() {
 
@@ -61,8 +62,8 @@ LPCVOID multilevel_pointer::get_final_address(HANDLE process_handle) {
         ret = (LPVOID)new_address;
       }
       else {
-        std::uint32_t new_address;
         // read from other process memory
+        std::uint32_t new_address;
         if (
           !ReadProcessMemory(
             process_handle,

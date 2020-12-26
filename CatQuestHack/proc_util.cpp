@@ -25,7 +25,7 @@ std::string proc_util::get_process_name(DWORD process_id) {
     CloseHandle(process_handle);
   }
 
-  std::wstring wret(&tchar_process_name[0]);
+  std::basic_string<TCHAR> wret(tchar_process_name);
   return std::string(wret.begin(), wret.end());
 }
 
@@ -36,7 +36,7 @@ HANDLE proc_util::get_proc_handle(std::string process_name) {
       process_name.size() <= current_process_name.size() &&
       std::equal(process_name.rbegin(), process_name.rend(), current_process_name.rbegin())
       ) {
-        HANDLE ret = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_VM_WRITE, FALSE, process_id);
+      HANDLE ret = OpenProcess(PROCESS_VM_OPERATION | PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_VM_WRITE, FALSE, process_id);
         return ret;
     }
   }
@@ -56,7 +56,7 @@ std::map< std::string, LPCVOID > proc_util::get_module_base_addresses(HANDLE pro
     for (int i = 0; i < (arr_byte_len / sizeof(HMODULE)); ++i) {
       TCHAR mod_name[MAX_PATH];
       if (GetModuleFileNameEx(proc_handle, proc_modules[i], mod_name, sizeof(mod_name) / sizeof(TCHAR))) {
-        std::wstring wmod_name(&mod_name[0]);
+        std::basic_string<TCHAR> wmod_name(mod_name);
         ret[std::string(wmod_name.begin(), wmod_name.end())] = (LPCVOID)proc_modules[i];
       }
     }
