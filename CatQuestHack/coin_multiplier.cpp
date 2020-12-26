@@ -15,6 +15,7 @@ const byte coin_multiplier::asm_code[] = {
   0x58 // pop eax
 };
 
+
 coin_multiplier::coin_multiplier(HANDLE proc_handle) {
   this->proc_handle = proc_handle;
 }

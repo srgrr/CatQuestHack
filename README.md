@@ -1,2 +1,2 @@
 # CatQuestHack
-A simple cheat to always have 1000000000 coins in Cat Quest. This is my first hack!
+A cheat to have a x2 coin multiplier, it can also set the number of coins to an arbitrary value.
