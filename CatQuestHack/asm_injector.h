@@ -16,7 +16,7 @@ private:
 public:
   asm_injector(HANDLE, LPCVOID, int, byte*, int);
   // inject the code in a given address in the other process mem space
-  bool inject();
+  LPCVOID inject();
 
   // getters
   HANDLE get_proc_handle();

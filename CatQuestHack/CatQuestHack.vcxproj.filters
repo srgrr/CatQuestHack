@@ -30,6 +30,9 @@
     <ClCompile Include="coin_multiplier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cat_quest_hack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asm_injector.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="coin_multiplier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cat_quest_hack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,7 +9,7 @@ asm_injector::asm_injector(HANDLE proc_handle, LPCVOID injection_address, int pr
   this->bytes_to_inject = bytes_to_inject;
 }
 
-bool asm_injector::inject() {
+LPCVOID asm_injector::inject() {
   int bytes_to_alloc = prefix_size + bytes_to_inject + 5;
   // Get memory in the process to allocate the malicious code
   LPCVOID malicious_address = proc_util::alloc(this->proc_handle, bytes_to_alloc);
@@ -82,7 +82,7 @@ bool asm_injector::inject() {
     );
   }
   // ... and just pray this shit works
-  return true;
+  return malicious_address;
 }
 
 // getters
