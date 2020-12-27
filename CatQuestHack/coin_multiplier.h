@@ -9,10 +9,11 @@ private:
   const static int multiplier_offset;
   const static int prefix_length;
   LPCVOID code_page;
+  LPCVOID instruction_address;
   HANDLE proc_handle;
 public:
   coin_multiplier(HANDLE proc_handle);
-  void run(LPCVOID base_address);
+  void inject();
   void change_multiplier(int);
 };
 

@@ -42,10 +42,10 @@ coin_multiplier::coin_multiplier(HANDLE proc_handle) {
 }
 
 
-void coin_multiplier::run(LPCVOID base_address) {
+void coin_multiplier::inject() {
   this->code_page = asm_injector::builder()
     .with_proc_handle(this->proc_handle)
-    .with_injection_address(base_address)
+    .with_injection_address(this->instruction_address)
     .with_bytes_to_inject(sizeof(asm_code))
     .with_prefix_size(5)
     .with_code_to_inject((byte*)asm_code)
