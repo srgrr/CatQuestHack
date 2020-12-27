@@ -1,2 +1,2 @@
 # CatQuestHack
-A cheat to have a x2 coin multiplier, it can also set the number of coins to an arbitrary value.
+A hack for the Cat Quest game. It changes the behavior of the coin addition code to make it possible to multiply the coins you get by any given coefficient.
