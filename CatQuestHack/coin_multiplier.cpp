@@ -1,5 +1,20 @@
 #include "coin_multiplier.h"
 
+// this code just comes before the injection point
+// should be unique in the 100k code page
+const byte coin_multiplier::asm_prefix[] = {
+  0xe8, 0xad, 0x01, 0x00, 0x00, //call XXXXXXXX
+  0x83, 0xc4, 0x20, // add esp, 20
+  0x8b, 0x47, 0x14, // mov eax,[edi+14]
+  0x8b, 0x40, 0x0c, // mov eax,[eax+08]
+  0x8b, 0x48, 0x08, // mov ecx,[eax+08]
+  0x8b, 0xc1, // mov eax, ecx
+  0x39, 0x09, // cmp [ecx], ecx
+  0x8b, 0x49, 0x18, // mov ecx,[ecx+18]
+  0x8b, 0x56, 0x30 // mov edx,[esi+30]
+};
+
+
 // the code template multiplies the amount to be added by 1
 // but it can be changed to any 32bit value
 const byte coin_multiplier::asm_code[] = {

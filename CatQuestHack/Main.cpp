@@ -16,6 +16,14 @@ int main(int argc, char** argv) {
       MB_OK | MB_ICONQUESTION);
   }
 
+  auto mem_regions = proc_util::get_memory_regions(cat_quest_handle);
+
+  for (auto& mem_region : mem_regions) {
+    std::cerr << mem_region.BaseAddress << " " << std::hex << mem_region.RegionSize << std::endl;
+  }
+
+  return 0;
+
   auto mono_dll_base_address = proc_util::get_module_base_address(cat_quest_handle, "mono.dll");
   cat_quest::money_value.set_base_address((DWORD)mono_dll_base_address);
   LPCVOID money_addr = cat_quest::money_value.get_final_address(cat_quest_handle);

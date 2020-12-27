@@ -27,5 +27,9 @@ public:
   static LPCVOID get_module_base_address(HANDLE proc_handle, std::string mod_name);
   // alloc memory in a foreign process, get the pointer to the new region
   static LPCVOID alloc(HANDLE proc_handle, int byte_amount);
+  // find a memory pattern in a memory region of a process
+  static std::vector< LPCVOID > find_pattern(HANDLE proc_handle, LPCVOID region_base, int region_bytes, byte* pattern, int pattern_bytes);
+  // return all the memory region of a process
+  static std::vector< MEMORY_BASIC_INFORMATION > get_memory_regions(HANDLE proc_handle);
 };
 

@@ -88,3 +88,42 @@ LPCVOID proc_util::get_module_base_address(HANDLE proc_handle, std::string mod_n
 LPCVOID proc_util::alloc(HANDLE proc_handle, int byte_amount) {
   return VirtualAllocEx(proc_handle, NULL, byte_amount, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 }
+
+std::vector<LPCVOID> proc_util::find_pattern(HANDLE proc_handle, LPCVOID region_base, int region_bytes, byte* pattern, int pattern_bytes) {
+  std::vector< int > fail_function(pattern_bytes + 1);
+  fail_function[0] = -1;
+  int l = -1, r = 0;
+  while (r < pattern_bytes) {
+    while (l >= 0 && pattern[l] != pattern[r]) l = fail_function[l];
+    ++l, ++r;
+    fail_function[r] = l;
+  }
+  std::vector< LPCVOID > ret;
+  l = 0, r = 0;
+  while (r < pattern_bytes) {
+    LPCVOID current_pointer = (LPCVOID)((DWORD)region_base + r);
+    byte current_byte = proc_util::read_from_proc(proc_handle, current_pointer, 1)[0];
+    while (l >= 0 && current_byte != pattern[l]) {
+      l = fail_function[l];
+      ++l, ++r;
+      if (l == pattern_bytes) {
+        l = fail_function[l];
+        ret.push_back(current_pointer);
+      }
+    }
+  }
+  return ret;
+}
+
+std::vector< MEMORY_BASIC_INFORMATION > proc_util::get_memory_regions(HANDLE proc_handle) {
+  std::vector< MEMORY_BASIC_INFORMATION > ret;
+  DWORD addr = 0;
+  SIZE_T last_amount = 1;
+  while (last_amount != 0) {
+    MEMORY_BASIC_INFORMATION buffer;
+    last_amount = VirtualQueryEx(proc_handle, (LPCVOID)addr, &buffer, sizeof(buffer));
+    ret.push_back(buffer);
+    addr = (DWORD)buffer.BaseAddress + buffer.RegionSize;
+  }
+  return ret;
+}
