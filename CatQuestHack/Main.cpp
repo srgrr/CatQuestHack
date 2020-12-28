@@ -1,8 +1,12 @@
-#include "cat_quest_hack.h"
 #include <Windows.h>
-#include <fstream>
+#include <iostream>
+#include "console_backend.h"
 
 
 int main(int argc, char** argv) {
-  cat_quest_hack hack;
+  std::string command;
+  int amount;
+  while (std::cin >> command >> amount) {
+    console_backend::get_instance()->execute_command(command, amount);
+  }
 }

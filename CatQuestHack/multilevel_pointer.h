@@ -17,7 +17,7 @@ public:
 	// getters
 	DWORD get_base_address() const;
 	std::vector<std::uint32_t> get_offsets() const;
-	multilevel_pointer* get_previous_pointer();
+	multilevel_pointer* get_previous_pointer() const;
 	// setters
 	void set_base_address(DWORD base_address);
 	void add_offset(std::uint32_t offset);

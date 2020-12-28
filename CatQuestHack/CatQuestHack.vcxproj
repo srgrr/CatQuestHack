@@ -103,6 +103,7 @@
     <ClCompile Include="asm_injector.cpp" />
     <ClCompile Include="cat_quest_hack.cpp" />
     <ClCompile Include="coin_multiplier.cpp" />
+    <ClCompile Include="console_backend.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="multilevel_pointer.cpp" />
     <ClCompile Include="proc_util.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="cat_quest.h" />
     <ClInclude Include="cat_quest_hack.h" />
     <ClInclude Include="coin_multiplier.h" />
+    <ClInclude Include="console_backend.h" />
     <ClInclude Include="multilevel_pointer.h" />
     <ClInclude Include="proc_util.h" />
   </ItemGroup>

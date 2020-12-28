@@ -30,10 +30,12 @@ multilevel_pointer multilevel_pointer::builder::build() {
 
 multilevel_pointer::multilevel_pointer() {
   this->base_address = (DWORD)0xDEADBEEF;
+  this->previous_pointer = nullptr;
 }
 
 multilevel_pointer::multilevel_pointer(const multilevel_pointer& other) {
   this->base_address = other.get_base_address();
+  this->previous_pointer = other.get_previous_pointer();
   this->offsets = other.get_offsets();
 }
 
@@ -93,7 +95,7 @@ std::vector<std::uint32_t> multilevel_pointer::get_offsets() const {
   return offsets;
 }
 
-multilevel_pointer* multilevel_pointer::get_previous_pointer() {
+multilevel_pointer* multilevel_pointer::get_previous_pointer() const {
   return this->previous_pointer;
 }
 
