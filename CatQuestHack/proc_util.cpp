@@ -36,7 +36,7 @@ HANDLE proc_util::get_proc_handle(std::string process_name) {
       process_name.size() <= current_process_name.size() &&
       std::equal(process_name.rbegin(), process_name.rend(), current_process_name.rbegin())
       ) {
-      HANDLE ret = OpenProcess(PROCESS_VM_OPERATION | PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_VM_WRITE, FALSE, process_id);
+      HANDLE ret = OpenProcess(PROCESS_ALL_ACCESS, FALSE, process_id);
         return ret;
     }
   }
@@ -45,7 +45,9 @@ HANDLE proc_util::get_proc_handle(std::string process_name) {
 
 byte* proc_util::read_from_proc(HANDLE proc_handle, LPCVOID base_address, int byte_amount) {
   byte *buffer = new byte[byte_amount];
-  ReadProcessMemory(proc_handle, base_address, (LPVOID)buffer, byte_amount, NULL);
+  if (!ReadProcessMemory(proc_handle, base_address, (LPVOID)buffer, byte_amount, NULL)) {
+    std::cerr << "Couldn't read from process memory [base_address=" << base_address << ",byte_amount=" << byte_amount << "]" << std::endl;
+  }
   return buffer;
 } 
 
@@ -106,14 +108,14 @@ std::vector<LPCVOID> proc_util::find_pattern(HANDLE proc_handle, LPCVOID region_
   std::vector< LPCVOID > ret;
   l = 0, r = 0;
   while (r < region_bytes) {
-    LPCVOID current_pointer = (LPCVOID)((DWORD)region_base + r);
     while (l >= 0 && text[r] != pattern[l]) l = fail_function[l];
     ++l, ++r;
     if (l == pattern_bytes) {
       l = fail_function[l];
-      ret.push_back(current_pointer);
+      ret.push_back((LPCVOID)((DWORD)region_base + r));
     }
   }
+  delete text;
   return ret;
 }
 

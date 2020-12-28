@@ -78,6 +78,7 @@ int cat_quest_hack::get_coins() {
       4
     );
   int ret = *(int*)coins_buff;
+  delete coins_buff;
   return ret;
 }
 

@@ -26,6 +26,7 @@ LPCVOID asm_injector::inject() {
     prefix_instructions,
     this->prefix_size
   );
+  delete prefix_instructions;
   // write the injection code itself
   proc_util::write_to_proc_mem(
     this->proc_handle,

@@ -3,10 +3,10 @@
 // this code just comes before the injection point
 // should be unique in the 100k code page
 const byte coin_multiplier::asm_prefix[] = {
-  0xe8, 0xad, 0x01, 0x00, 0x00, //call XXXXXXXX
+  0xe8, 0xad, 0x01, 0x00, 0x00, // call XXXXXXXX
   0x83, 0xc4, 0x20, // add esp, 20
   0x8b, 0x47, 0x14, // mov eax,[edi+14]
-  0x8b, 0x40, 0x0c, // mov eax,[eax+08]
+  0x8b, 0x40, 0x0c, // mov eax,[eax+0c]
   0x8b, 0x48, 0x08, // mov ecx,[eax+08]
   0x8b, 0xc1, // mov eax, ecx
   0x39, 0x09, // cmp [ecx], ecx
@@ -78,8 +78,8 @@ void coin_multiplier::set_multiplier(int new_val) {
 
 void coin_multiplier::_solve_injection_point() {
   for (MEMORY_BASIC_INFORMATION& region : this->memory_regions) {
-    if (region.RegionSize == 0x100000) {
-      std::cerr << "Scanning region " << region.BaseAddress << std::endl;
+    if ((region.Protect | PAGE_EXECUTE_READ) && region.RegionSize == 0x100000) {
+      std::cerr << "Scanning region [" << region.BaseAddress << ", " << (LPCVOID)((DWORD)region.BaseAddress + region.RegionSize - 1) << "]" << std::endl;
       auto matches = proc_util::find_pattern(
         this->proc_handle,
         region.BaseAddress,
@@ -90,7 +90,7 @@ void coin_multiplier::_solve_injection_point() {
       for (auto& match : matches) {
         std::cerr << std::hex << "Possible match -> " << match << std::endl;
         this->code_page = region.BaseAddress;
-        this->instruction_address = (LPCVOID)((DWORD)match + 1);
+        this->instruction_address = (LPCVOID)((DWORD)match);
       }
     }
   }
