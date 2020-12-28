@@ -39,11 +39,11 @@ cat_quest_hack::cat_quest_hack() {
   _set_memory_regions();
   _set_proc_modules();
   _set_coins_address();
-  this->coin_mul = new coin_multiplier(this->proc_handle);
+  this->coin_mul = new coin_multiplier(this->proc_handle, this->memory_regions);
 }
 
 void cat_quest_hack::set_coin_multiplier(int amount) {
-  // TODO
+  this->coin_mul->set_multiplier(amount);
 }
 
 void cat_quest_hack::set_xp_multiplier(int amount) {
@@ -63,7 +63,7 @@ void cat_quest_hack::set_xp(int amount) {
 }
 
 int cat_quest_hack::get_coin_multiplier() {
-  return 0;
+  return this->coin_mul->get_multiplier();
 }
 
 int cat_quest_hack::get_xp_multiplier() {

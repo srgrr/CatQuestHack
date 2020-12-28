@@ -89,7 +89,12 @@ LPCVOID proc_util::alloc(HANDLE proc_handle, int byte_amount) {
   return VirtualAllocEx(proc_handle, NULL, byte_amount, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 }
 
-std::vector<LPCVOID> proc_util::find_pattern(HANDLE proc_handle, LPCVOID region_base, int region_bytes, byte* pattern, int pattern_bytes) {
+std::vector<LPCVOID> proc_util::find_pattern(HANDLE proc_handle, LPCVOID region_base, int region_bytes, const byte* pattern, int pattern_bytes) {
+  // Byte by byte queries are slow as hell, memory is free and code regions are not usually that big
+  byte* text = proc_util::read_from_proc(proc_handle, region_base, region_bytes);
+  // The pattern matching algorithm is named KMP if you are curious, it gets matches in linear time
+  // actually the only reason to implement this is that it felt fancy, because usually patterns are
+  // a few bytes of ASM code
   std::vector< int > fail_function(pattern_bytes + 1);
   fail_function[0] = -1;
   int l = -1, r = 0;
@@ -100,16 +105,13 @@ std::vector<LPCVOID> proc_util::find_pattern(HANDLE proc_handle, LPCVOID region_
   }
   std::vector< LPCVOID > ret;
   l = 0, r = 0;
-  while (r < pattern_bytes) {
+  while (r < region_bytes) {
     LPCVOID current_pointer = (LPCVOID)((DWORD)region_base + r);
-    byte current_byte = proc_util::read_from_proc(proc_handle, current_pointer, 1)[0];
-    while (l >= 0 && current_byte != pattern[l]) {
+    while (l >= 0 && text[r] != pattern[l]) l = fail_function[l];
+    ++l, ++r;
+    if (l == pattern_bytes) {
       l = fail_function[l];
-      ++l, ++r;
-      if (l == pattern_bytes) {
-        l = fail_function[l];
-        ret.push_back(current_pointer);
-      }
+      ret.push_back(current_pointer);
     }
   }
   return ret;

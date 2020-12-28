@@ -13,7 +13,9 @@ console_backend::console_backend() {
 
 }
 
-void console_backend::execute_command(std::string command, int amount) {
+std::map< std::string, std::string > console_backend::execute_command(std::string command, int amount) {
+  std::map< std::string, std::string > ret;
+  ret["result"] = "OK";
   if (command == "set_coin_multiplier") {
     this->hack.set_coin_multiplier(amount);
   }
@@ -26,13 +28,17 @@ void console_backend::execute_command(std::string command, int amount) {
   else if (command == "set_xp") {
     this->hack.set_xp(amount);
   }
-  else if (command == "show_current_parameters") {
-    std::cout << "Coin multiplier -> " << this->hack.get_coin_multiplier() << std::endl;
-    std::cout << "XP multiplier -> " << this->hack.get_xp_multiplier() << std::endl;
-    std::cout << "Coins -> " << this->hack.get_coins() << std::endl;
-    std::cout << "XP -> " << this->hack.get_xp() << std::endl;
-  }
   else {
-    std::cerr << "Invalid command" << std::endl;
+    ret["result"] = "INVALID_CMD";
   }
+  ret["coin_multiplier"] = std::to_string(this->hack.get_coin_multiplier());
+  ret["xp_multiplier"] = std::to_string(this->hack.get_xp_multiplier());
+  ret["coins"] = std::to_string(this->hack.get_coins());
+  ret["xp"] = std::to_string(this->hack.get_xp());
+  std::cerr << "-------------" << std::endl;
+  for (auto& kv : ret) {
+    std::cerr << kv.first << " -> " << kv.second << std::endl;
+  }
+  std::cerr << "-------------" << std::endl;
+  return ret;
 }

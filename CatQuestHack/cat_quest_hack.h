@@ -10,7 +10,6 @@
 class cat_quest_hack {
 private:
   // Constants
-  const static SIZE_T code_page_size = 0x100000;
   const std::string proc_name = "Cat Quest.exe";
   // Class attributes
   HANDLE proc_handle;

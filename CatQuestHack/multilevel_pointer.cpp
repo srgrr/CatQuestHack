@@ -28,9 +28,9 @@ multilevel_pointer multilevel_pointer::builder::build() {
   return ret;
 }
 
-multilevel_pointer::multilevel_pointer() {
-  this->base_address = (DWORD)0xDEADBEEF;
-  this->previous_pointer = nullptr;
+multilevel_pointer::multilevel_pointer() :
+  base_address((DWORD)0xDEADBEEF),
+  previous_pointer(nullptr) {
 }
 
 multilevel_pointer::multilevel_pointer(const multilevel_pointer& other) {

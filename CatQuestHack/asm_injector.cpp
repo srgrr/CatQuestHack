@@ -1,12 +1,12 @@
 #include "asm_injector.h"
 
-asm_injector::asm_injector(HANDLE proc_handle, LPCVOID injection_address, int prefix_size, byte* code_to_inject, int bytes_to_inject) {
-  this->proc_handle = proc_handle;
-  this->injection_address = injection_address;
-  // -1 means we must compute it, not available atm (assume sequences of 3 bytes)
-  this->prefix_size = prefix_size;
-  this->code_to_inject = code_to_inject;
-  this->bytes_to_inject = bytes_to_inject;
+asm_injector::asm_injector(HANDLE proc_handle, LPCVOID injection_address, int prefix_size, byte* code_to_inject, int bytes_to_inject) :
+  proc_handle(proc_handle),
+  injection_address(injection_address),
+  prefix_size(prefix_size),
+  code_to_inject(code_to_inject),
+  bytes_to_inject(bytes_to_inject) {
+
 }
 
 LPCVOID asm_injector::inject() {

@@ -36,13 +36,17 @@ const int coin_multiplier::multiplier_offset = 5;
 // length of the minimum movable prefix of the coin addition code
 const int coin_multiplier::prefix_length = 5;
 
-coin_multiplier::coin_multiplier(HANDLE proc_handle) {
-  this->proc_handle = proc_handle;
-  this->code_page = nullptr;
+coin_multiplier::coin_multiplier(HANDLE proc_handle, std::vector< MEMORY_BASIC_INFORMATION >& memory_regions) :
+  proc_handle(proc_handle),
+  memory_regions(memory_regions),
+  multiplier(1),
+  code_page(nullptr),
+  instruction_address(nullptr) {
+  _solve_injection_point();
+  _inject();
 }
 
-
-void coin_multiplier::inject() {
+void coin_multiplier::_inject() {
   this->code_page = asm_injector::builder()
     .with_proc_handle(this->proc_handle)
     .with_injection_address(this->instruction_address)
@@ -53,13 +57,41 @@ void coin_multiplier::inject() {
     .inject();
 }
 
+int coin_multiplier::get_multiplier() {
+  return this->multiplier;
+}
 
-void coin_multiplier::change_multiplier(int new_val) {
+void coin_multiplier::_update_multiplier() {
   int offset_in_page = this->multiplier_offset + this->prefix_length;
   proc_util::write_to_proc_mem(
     this->proc_handle,
     (LPCVOID)((DWORD)this->code_page + offset_in_page),
-    (LPCVOID)&new_val,
+    (LPCVOID)&this->multiplier,
     4
   );
+}
+
+void coin_multiplier::set_multiplier(int new_val) {
+  this->multiplier = new_val;
+  this->_update_multiplier();
+}
+
+void coin_multiplier::_solve_injection_point() {
+  for (MEMORY_BASIC_INFORMATION& region : this->memory_regions) {
+    if (region.RegionSize == 0x100000) {
+      std::cerr << "Scanning region " << region.BaseAddress << std::endl;
+      auto matches = proc_util::find_pattern(
+        this->proc_handle,
+        region.BaseAddress,
+        region.RegionSize,
+        coin_multiplier::asm_prefix,
+        sizeof(coin_multiplier::asm_prefix)
+      );
+      for (auto& match : matches) {
+        std::cerr << std::hex << "Possible match -> " << match << std::endl;
+        this->code_page = region.BaseAddress;
+        this->instruction_address = (LPCVOID)((DWORD)match + 1);
+      }
+    }
+  }
 }
