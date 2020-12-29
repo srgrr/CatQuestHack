@@ -9,10 +9,6 @@ void cat_quest_hack::_set_proc_modules() {
   this->proc_modules = proc_util::get_module_base_addresses(this->proc_handle);
 }
 
-void cat_quest_hack::_set_memory_regions() {
-  this->memory_regions = proc_util::get_memory_regions(this->proc_handle);
-
-}
 
 void cat_quest_hack::_set_coins_address() {
   multilevel_pointer coins_pointer =
@@ -30,16 +26,13 @@ void cat_quest_hack::_set_coins_address() {
   this->coins_address = coins_pointer.get_final_address(this->proc_handle);
 }
 
-void cat_quest_hack::_set_xp_address() {
-  // TODO
-}
 
 cat_quest_hack::cat_quest_hack() {
   _set_proc_handle();
-  _set_memory_regions();
   _set_proc_modules();
   _set_coins_address();
-  this->coin_mul = new coin_multiplier(this->proc_handle, this->memory_regions);
+  this->coin_mul = new coin_multiplier(this->proc_handle);
+  this->xp_mul = new xp_multiplier(this->proc_handle);
 }
 
 void cat_quest_hack::set_coin_multiplier(int amount) {
@@ -47,7 +40,7 @@ void cat_quest_hack::set_coin_multiplier(int amount) {
 }
 
 void cat_quest_hack::set_xp_multiplier(int amount) {
-  // TODO
+  this->xp_mul->set_multiplier(amount);
 }
 
 void cat_quest_hack::set_coins(int amount) {
@@ -59,15 +52,13 @@ void cat_quest_hack::set_coins(int amount) {
   );
 }
 
-void cat_quest_hack::set_xp(int amount) {
-}
 
 int cat_quest_hack::get_coin_multiplier() {
   return this->coin_mul->get_multiplier();
 }
 
 int cat_quest_hack::get_xp_multiplier() {
-  return 0;
+  return this->xp_mul->get_multiplier();
 }
 
 int cat_quest_hack::get_coins() {
@@ -80,8 +71,4 @@ int cat_quest_hack::get_coins() {
   int ret = *(int*)coins_buff;
   delete coins_buff;
   return ret;
-}
-
-int cat_quest_hack::get_xp() {
-  return 0;
 }

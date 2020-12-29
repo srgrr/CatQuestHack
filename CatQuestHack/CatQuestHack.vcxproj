@@ -107,6 +107,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="multilevel_pointer.cpp" />
     <ClCompile Include="proc_util.cpp" />
+    <ClCompile Include="xp_multiplier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asm_injector.h" />
@@ -116,6 +117,7 @@
     <ClInclude Include="console_backend.h" />
     <ClInclude Include="multilevel_pointer.h" />
     <ClInclude Include="proc_util.h" />
+    <ClInclude Include="xp_multiplier.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

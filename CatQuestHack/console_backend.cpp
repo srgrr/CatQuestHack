@@ -25,16 +25,12 @@ std::map< std::string, std::string > console_backend::execute_command(std::strin
   else if (command == "set_coins") {
     this->hack.set_coins(amount);
   }
-  else if (command == "set_xp") {
-    this->hack.set_xp(amount);
-  }
   else {
     ret["result"] = "INVALID_CMD";
   }
   ret["coin_multiplier"] = std::to_string(this->hack.get_coin_multiplier());
   ret["xp_multiplier"] = std::to_string(this->hack.get_xp_multiplier());
   ret["coins"] = std::to_string(this->hack.get_coins());
-  ret["xp"] = std::to_string(this->hack.get_xp());
   std::cerr << "-------------" << std::endl;
   for (auto& kv : ret) {
     std::cerr << kv.first << " -> " << kv.second << std::endl;

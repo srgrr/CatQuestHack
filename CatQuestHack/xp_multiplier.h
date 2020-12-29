@@ -1,9 +1,8 @@
 #pragma once
+#include "proc_util.h"
 #include "asm_injector.h"
-#include <set>
-// multiply the coins you collect by X
-// the GUI will still show the actual amount of coins you collect
-class coin_multiplier {
+
+class xp_multiplier {
 private:
   const static byte asm_prefix[];
   const static byte asm_code[];
@@ -17,9 +16,9 @@ private:
   void _update_multiplier();
   void _inject();
 public:
-  coin_multiplier(HANDLE proc_handle);
+  xp_multiplier(HANDLE proc_handle);
   // delete porque jodete
-  coin_multiplier(const coin_multiplier&) = delete;
+  xp_multiplier(const xp_multiplier&) = delete;
   // Getters
   int get_multiplier();
   // Setters

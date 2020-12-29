@@ -46,7 +46,7 @@ HANDLE proc_util::get_proc_handle(std::string process_name) {
 byte* proc_util::read_from_proc(HANDLE proc_handle, LPCVOID base_address, int byte_amount) {
   byte *buffer = new byte[byte_amount];
   if (!ReadProcessMemory(proc_handle, base_address, (LPVOID)buffer, byte_amount, NULL)) {
-    std::cerr << "Couldn't read from process memory [base_address=" << base_address << ",byte_amount=" << byte_amount << "]" << std::endl;
+    //std::cerr << "Couldn't read from process memory [base_address=" << base_address << ",byte_amount=" << byte_amount << "]" << std::endl;
   }
   return buffer;
 } 
