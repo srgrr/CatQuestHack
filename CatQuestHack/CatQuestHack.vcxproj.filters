@@ -44,9 +44,6 @@
     <ClInclude Include="asm_injector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cat_quest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="multilevel_pointer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
