@@ -1,5 +1,5 @@
 # CatQuestHack
-A console hack for the Cat Quest Game. It features the following:
+A console hack for the Cat Quest Game. It has the following features:
 - Coin Multiplier (multiplies the value of the coins you pick by X, quest rewards are not affected)
 - XP Multiplier (multiplies the value of the XP you get by X, quest rewards are not affected)
 - Change the Coin value to whatever you want
