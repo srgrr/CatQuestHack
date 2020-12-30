@@ -14,7 +14,7 @@ Once its working you should read two messages on the console saying that code in
 
 which are pretty self-explanatory.
 
-You cannot close an re-open the cheat for the same game instance, it won't work. You should either keep playing the game without being able to modify the multipliers or the number of coins you have, or close and open it again. Multipliers will still have effect even if the cheat has been closed.
+You cannot close and re-open the cheat during the same game session, it won't work. You should either keep playing the game without being able to modify the multipliers or the number of coins you have anymore, or close the game and open it again. Multipliers will still have effect even if the cheat has been closed.
 
 # Additional comments
 This is the first game cheat I ever made. All of the code is 100% mine, except for maybe some small copypastes dealing with Windows API. There are better libraries to do the same thing my code does, but feel free to use, copy and do whatever you want with it, but mention me if you do :)
